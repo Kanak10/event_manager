@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:event_manager/UI/home_screen.dart';
 import 'package:event_manager/UI/splash_screen/local_widget/splash_non_auth_screen.dart';
 import 'package:event_manager/bloC/splash/bloc/splash_bloc.dart';
@@ -25,11 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocConsumer<SplashBloc, SplashState>(
       bloc: splashBloc,
       listener: (context, state) {
+        print("SplashAuthenticatedState:: ${state}");
         if (state is SplashAuthenticatedState) {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()),  (Route<dynamic> route) => false);
         }
       },
       builder: (context, state) {
+        print("state.runtimeType:: ${state.runtimeType}");
+        log("log state.runtimeType: ${state.runtimeType}");
         switch(state.runtimeType) {
           case SplashLoadingState:
             return Scaffold(
@@ -41,12 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
             );
-            break;
           case SplashNonAuthScreen:
             return SplashNonAuthScreen();
-            break;
           default:
-            return SizedBox();
+            return Container(color: Colors.blue);
 
         }
       }
