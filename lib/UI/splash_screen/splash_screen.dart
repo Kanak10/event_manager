@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:event_manager/UI/home_screen.dart';
 import 'package:event_manager/UI/splash_screen/local_widget/splash_non_auth_screen.dart';
 import 'package:event_manager/bloC/splash/bloc/splash_bloc.dart';
@@ -15,26 +13,27 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final SplashBloc splashBloc = SplashBloc();
   @override
   void initState(){
     super.initState();
-    splashBloc.add(CheckUserAuthenticationEvent());
+    context.read<SplashBloc>().add(SplashStartEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SplashBloc, SplashState>(
-      bloc: splashBloc,
+      bloc: context.read<SplashBloc>(),
       listener: (context, state) {
-        print("SplashAuthenticatedState:: ${state}");
         if (state is SplashAuthenticatedState) {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()),  (Route<dynamic> route) => false);
+          if (state.isLoggedIn) {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()),  (Route<dynamic> route) => false);
+          } else {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SplashNonAuthScreen()),  (Route<dynamic> route) => false);
+          }
         }
+        setState(() {});
       },
       builder: (context, state) {
-        print("state.runtimeType:: ${state.runtimeType}");
-        log("log state.runtimeType: ${state.runtimeType}");
         switch(state.runtimeType) {
           case SplashLoadingState:
             return Scaffold(
@@ -46,11 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
             );
-          case SplashNonAuthScreen:
-            return SplashNonAuthScreen();
           default:
-            return Container(color: Colors.blue);
-
+            return SizedBox();
         }
       }
     );

@@ -7,6 +7,9 @@ final class SplashInitial extends SplashState {}
 
 class SplashLoadingState extends SplashState {}
 
-class SplashAuthenticatedState extends SplashState {}
+class SplashAuthenticatedState extends SplashState {
+  final bool isLoggedIn;
+  SplashAuthenticatedState({required this.isLoggedIn});
+}
 
 class SplashUnauthenticatedState extends SplashState {}

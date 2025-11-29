@@ -41,6 +41,8 @@ dependencies:
   hive: ^2.2.3
   connectivity_plus: ^7.0.0
   dio: ^5.9.0
+  carousel_slider: ^5.1.1
+  dots_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:
