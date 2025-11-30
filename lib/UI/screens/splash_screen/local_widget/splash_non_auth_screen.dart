@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:event_manager/UI/global_widgets/buttons/em_elevalted_button.dart';
-import 'package:event_manager/UI/home_screen.dart';
-import 'package:event_manager/UI/login_screen/login_screen.dart';
+import 'package:event_manager/UI/screens/auth_screen/auth_screen.dart';
 import 'package:event_manager/theams/app_colors.dart';
 import 'package:event_manager/utils/image_const/image_constant.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +55,14 @@ class _SplashNonAuthScreenState extends State<SplashNonAuthScreen> {
                     carouselController: carouselSliderController,
                     itemCount: titles.length,
                     itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-                      currentIndex = index + 1;
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(titles[index],
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: textPrimaryColor,
-                              fontSize: 24
-                            )
+                              fontSize: 30
+                            ), textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 20),
                           Text(subTitles[index],
@@ -75,7 +73,7 @@ class _SplashNonAuthScreenState extends State<SplashNonAuthScreen> {
                             textAlign: TextAlign.justify,
                           ),
                         ]);
-                      },
+                    },
                     options: CarouselOptions(
                       aspectRatio: 16/9,
                       viewportFraction: 1,
@@ -89,6 +87,7 @@ class _SplashNonAuthScreenState extends State<SplashNonAuthScreen> {
                       enlargeCenterPage: true,
                       enlargeFactor: 0.3,
                       scrollDirection: Axis.horizontal,
+                      onPageChanged: (index, reason) => setState(() => currentIndex = index),
                     )),
                     DotsIndicator(
                       dotsCount: titles.length,
@@ -101,13 +100,12 @@ class _SplashNonAuthScreenState extends State<SplashNonAuthScreen> {
                     ),
                     EMElevatedButton(
                       minWidth: MediaQuery.of(context).size.width,
-                      
                       onPressed: () {
-                        if(currentIndex != titles.length) {
+                        if(currentIndex != titles.length - 1) {
                           carouselSliderController.nextPage();
                           setState((){});
                         } else {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationScreen()));
                         }
                       },
                       child: Row(

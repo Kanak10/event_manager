@@ -1,8 +1,12 @@
-import 'package:event_manager/UI/home_screen.dart';
-import 'package:event_manager/UI/login_screen/login_screen.dart';
-import 'package:event_manager/UI/splash_screen/splash_screen.dart';
+import 'package:event_manager/UI/screens/home_screen.dart';
+import 'package:event_manager/UI/screens/auth_screen/auth_screen.dart';
+import 'package:event_manager/UI/screens/splash_screen/splash_screen.dart';
+import 'package:event_manager/bloC/auth/bloc/auth_bloc.dart';
+import 'package:event_manager/bloC/home/bloc/home_bloc.dart';
 import 'package:event_manager/bloC/splash/bloc/splash_bloc.dart';
+import 'package:event_manager/data/provider/remote/auth_api.dart';
 import 'package:event_manager/data/provider/remote/user_api.dart';
+import 'package:event_manager/data/repositories/auth_repository.dart';
 import 'package:event_manager/data/repositories/local/auth_token_repository.dart';
 import 'package:event_manager/data/repositories/user_repository.dart';
 import 'package:event_manager/theams/app_theme.dart';
@@ -24,10 +28,14 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<UserAPI>(create: (_) => UserAPI()),
         RepositoryProvider<UserRepository>(create: (context) => UserRepository(context.read<UserAPI>())),
         RepositoryProvider<AuthTokenRepository>(create: (context) => AuthTokenRepository()),
+        RepositoryProvider<AuthApi>(create: (_) => AuthApi()),
+        RepositoryProvider<AuthRepository>(create: (context) => AuthRepository(authApi: AuthApi()))
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<SplashBloc>(create: (context) => SplashBloc(context.read<UserRepository>(), context.read<AuthTokenRepository>())),
+          BlocProvider<AuthBloc>(create: (context) => AuthBloc(context.read<AuthRepository>())),
+          BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         ],
         child: MaterialApp(
           navigatorKey: NavigationService.navigatorKey,
@@ -37,7 +45,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => const SplashScreen(),
             '/home': (context) => const HomeScreen(),
-            '/login': (context) => const LoginScreen()
+            '/auth': (context) => const AuthenticationScreen()
           },
           // home: SplashScreen(),
         ),

@@ -1,5 +1,5 @@
-import 'package:event_manager/UI/home_screen.dart';
-import 'package:event_manager/UI/splash_screen/local_widget/splash_non_auth_screen.dart';
+import 'package:event_manager/UI/screens/home_screen.dart';
+import 'package:event_manager/UI/screens/splash_screen/local_widget/splash_non_auth_screen.dart';
 import 'package:event_manager/bloC/splash/bloc/splash_bloc.dart';
 import 'package:event_manager/utils/image_const/image_constant.dart';
 import 'package:flutter/material.dart';
